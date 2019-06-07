@@ -7,52 +7,59 @@ import org.junit.Test;
 
 public class RPSControllerTest {
 
+	RPSController rpsController;
 	// Instantiate anything before testing
 	@Before
 	public void setup() {
-		
+		rpsController = new RPSController();
 	}
 	
 	// Can we create a new game?
 	@Test
 	public void should_createNewGame() {
+		rpsController.createNewGame();
 		fail("Not implemented!");
 	}
 	
-	// Can we play a game created by the current player?
+	// Can we play an existing game?
 	@Test
-	public void should_playGame_when_getPlayerIDGameID() {
+	public void should_playGame_when_givenValidGameID() throws Exception {
+		rpsController.playGame();
+		fail("Not implemented!");
+	}
+	
+	// We can't play a game that does not exist
+	@Test
+	public void should_notPlayGame_when_givenInvalidGameID() throws Exception {
+		rpsController.playGame();
+		fail("Not implemented!");
+	}
+	
+	// Can we play a round in a game?
+	@Test
+	public void should_playRound_when_givenValidGameID() throws Exception {
+		rpsController.playRoundOfTheGame();
 		fail("Not implemented!");
 	}
 	
 	// We should NOT play a game that is created/owned by a different user
 	@Test
-	public void should_notPlayGame_when_getPlayerIDGameIDOfAnotherPlayer() {
+	public void should_notPlayRound_when_givenInvalidGameID() throws Exception {
+		rpsController.playRoundOfTheGame();
 		fail("Not implemented!");
 	}
 	
-	// Can we cancel/quit/abort the game early when we decide to?
+	// We should be able to restart an existing game
 	@Test
-	public void should_cancelGame_when_userChoosesToQuit() {
+	public void should_restartGame_when_givenValidGameID() throws Exception {
+		rpsController.restartGame();
 		fail("Not implemented!");
 	}
 	
-	// We should be able to play one of the valid moves
+	// We should NOT be able to restart a game that does not exist
 	@Test
-	public void should_playMove_when_givenValidMove() {
-		fail("Not implemented!");
-	}
-	
-	// We shouldn't be able to play an invalid or null move
-	@Test
-	public void should_notPlayMove_when_givenInvalidMove() {
-		fail("Not implemented!");
-	}
-	
-	// If we try to cancel a game that does not exist (game finished, cancelled etc) then we
-	// should handle this correctly
-	@Test
-	public void should_notCancel_when_gameDoesNotExist() {
+	public void should_notRestartGame_when_givenInvalidGameID() throws Exception {
+		rpsController.restartGame();
 		fail("Not implemented!");
 	}
 }
