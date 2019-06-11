@@ -1,10 +1,13 @@
 package com.jamielafferty.RPS.utils;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 import java.util.Map;
 import java.util.Random;
 
 public class RPSUtils {
+	
+	private static final Logger LOGGER = Logger.getLogger(RPSUtils.class.getName());
 	
 	/**
 	 * Available moves
@@ -24,14 +27,14 @@ public class RPSUtils {
 		PLAYER_TWO
 	};
 	
-	
 	/** 
 	 * Final declaration of the rules of the game. HashMap is structured as:
 	 * MovePlayed, MoveBeats
 	 */
-	public static final Map<Moves, Moves> rules = new HashMap<>();
+	public static final Map<Moves, Moves> rules;
 	
-	public static void initRules() {
+	static {
+		rules = new HashMap<>();
 		rules.put(Moves.ROCK, Moves.SCISSORS);
 		rules.put(Moves.PAPER, Moves.ROCK);
 		rules.put(Moves.SCISSORS, Moves.PAPER);
@@ -43,8 +46,11 @@ public class RPSUtils {
 	 * @return a move - ROCK, PAPER or SCISSORS
 	 */
 	public static Moves getRandomMove() {
+		LOGGER.info("Start - Get a random move to play");
 		Random random = new Random();
-		return Moves.values()[random.nextInt(Moves.values().length)];
+		Moves moveToPlay = Moves.values()[random.nextInt(Moves.values().length)];
+		LOGGER.info(String.format("End - Playing move {}", moveToPlay));
+		return moveToPlay;
 	}
 	
 	/**
@@ -61,27 +67,28 @@ public class RPSUtils {
 	 * TODO Throw a better/custom exception?
 	 */
 	public static Results getWinner(Moves playerOneMove, Moves playerTwoMove) throws IllegalArgumentException {
+		LOGGER.info("Start - Determine who the winner is");
 		// If either move is null or either move is not valid/legal, throw exception
 		if (null == playerOneMove || null == playerTwoMove
 				|| !(playerOneMove instanceof Moves) || !(playerTwoMove instanceof Moves)) {
+			LOGGER.warning(String.format("Invalid move has been given - PlayerOne: {}, PlayerTwo: {}", playerOneMove, playerTwoMove));
 			throw new IllegalArgumentException("Invalid move given: playerOneMove == " + playerOneMove + ", playerTwoMove == " + playerTwoMove);
 		}
 		
-		// If rules is empty, init them
-		//FIXME this needs to be auto done
-		if (rules.isEmpty()) initRules();
-		
 		// If they are the same move, then it's a tie
 		if (playerOneMove == playerTwoMove) {
+			LOGGER.info("End - It was a TIE");
 			return Results.TIE;
 		}
 		// Otherwise, compare with the rules
 		// If playerOneMove beats playerTwoMove, return player one is winner
 		else if (rules.get(playerOneMove) == playerTwoMove) {
+			LOGGER.info("End - PlayerOne has won");
 			return Results.PLAYER_ONE;
 		}
 		// If not, then playerTwoMove has won
 		else {
+			LOGGER.info("End - PlayerTwo has won");
 			return Results.PLAYER_TWO;
 		}	
 	}

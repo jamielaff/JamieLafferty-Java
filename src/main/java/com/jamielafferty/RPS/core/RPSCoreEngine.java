@@ -1,13 +1,15 @@
 package com.jamielafferty.RPS.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class RPSCoreEngine {
+	
+	private static final Logger LOGGER = Logger.getLogger(RPSCoreEngine.class.getName());
 
 	private List<RPSGame> rpsGames;
 	
@@ -33,6 +35,7 @@ public class RPSCoreEngine {
 				return game;
 			}
 		}
+		LOGGER.warning(String.format("Could not get game with ID {}", id));
 		throw new Exception("Game not found");
 			
 	
