@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 import com.jamielafferty.RPS.players.PlayerFixedImpl;
 import com.jamielafferty.RPS.players.PlayerRandomImpl;
 import com.jamielafferty.RPS.utils.RPSUtils;
@@ -17,7 +14,7 @@ public class RPSGame {
 	// Counter to control unique game IDs
 	private static final AtomicInteger count = new AtomicInteger(0);
 	// The game ID
-	private Integer gameId;
+	private Integer id;
 	// Array to hold all rounds from this game
 	private List<RPSRound> rpsRounds = new ArrayList<>();
 	
@@ -30,12 +27,12 @@ public class RPSGame {
 	
 	// Default constructor
 	public RPSGame() {
-		this.gameId = count.incrementAndGet();
+		this.id = count.incrementAndGet();
 	}
 	
 	// Custom constructor
 	public RPSGame(Integer id) {
-		this.gameId = id;
+		this.id = id;
 	}
 	
 	public void playRound() {
@@ -76,8 +73,8 @@ public class RPSGame {
 	 * Function to get the unique ID of this game
 	 * @return the gameId
 	 */
-	public Integer getGameId() {
-		return gameId;
+	public Integer getId() {
+		return id;
 	}
 	
 	/**

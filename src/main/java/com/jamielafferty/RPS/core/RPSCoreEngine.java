@@ -22,18 +22,21 @@ public class RPSCoreEngine {
 	public Integer createNewGame() {
 		RPSGame newGame = new RPSGame();
 		rpsGames.add(newGame);
-		return newGame.getGameId();
+		return newGame.getId();
 	}
 	
 	//TODO better exception
 	//TODO do this better, use the stream method
 	public RPSGame getGame(Integer id) throws Exception {
 		for (RPSGame game : rpsGames) {
-			if (game.getGameId() == id) {
+			if (game.getId() == id) {
 				return game;
 			}
 		}
 		throw new Exception("Game not found");
 			
+	
+	public List<RPSGame> getAllGames() {
+		return rpsGames;
 	}
 }
