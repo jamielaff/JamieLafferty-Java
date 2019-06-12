@@ -1,40 +1,50 @@
 package com.jamielafferty.RPS.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import com.jamielafferty.RPS.players.Player;
 import com.jamielafferty.RPS.players.PlayerFixedImpl;
 import com.jamielafferty.RPS.players.PlayerRandomImpl;
 import com.jamielafferty.RPS.utils.RPSUtils;
 import com.jamielafferty.RPS.utils.RPSUtils.Moves;
 import com.jamielafferty.RPS.utils.RPSUtils.Results;
 
-public class RPSGame {
+public class RPSGame {	
 	// Counter to control unique game IDs
-	private static final AtomicInteger count = new AtomicInteger(0);
+	protected static final AtomicInteger count = new AtomicInteger(0);
 	// The game ID
 	private Integer id;
 	// Array to hold all rounds from this game
 	private List<RPSRound> rpsRounds = new ArrayList<>();
+	// Array to hold both players - used for shuffling into random order for the game
+	List<Player> playerList = new ArrayList();
 	
 	// Player and win/tie counter declarations
-	private PlayerRandomImpl playerOne = new PlayerRandomImpl();
+	private PlayerRandomImpl playerRandomImpl = new PlayerRandomImpl();
+	private PlayerFixedImpl playerFixedImpl = new PlayerFixedImpl();
+	private Player playerOne;
+	private Player playerTwo;
 	private Integer playerOneWinCount = 0;
-	private PlayerFixedImpl playerTwo = new PlayerFixedImpl();
 	private Integer playerTwoWinCount = 0;
 	private Integer tieCount = 0;
 	
 	// Default constructor
 	public RPSGame() {
 		this.id = count.incrementAndGet();
+		randomisePlayers();
 	}
 	
 	// Custom constructor
 	public RPSGame(Integer id) {
 		this.id = id;
+		randomisePlayers();
 	}
 	
+	/**
+	 * Method to handle playing a round of the game
+	 */
 	public void playRound() {
 		// Make the moves for both players and determine winner
 		Moves playerOneMove = playerOne.makeMove();
@@ -57,6 +67,29 @@ public class RPSGame {
 		} else {
 			playerTwoWinCount++;
 		}
+	}
+	
+	/**
+	 * Function to randomise the order of the 2 players
+	 */
+	private void randomisePlayers() {
+		// Clear our list to ensure it's empty
+		playerList.clear();
+		
+		// Add both players to a list
+		playerList.add(playerFixedImpl);
+		playerList.add(playerRandomImpl);
+		// Shuffle the list so players are not always in the same order
+		Collections.shuffle(playerList);
+		
+		// Set players to list items 0 and 1 respectively
+		playerOne = playerList.get(0);
+		playerTwo = playerList.get(1);
+	}
+	
+	public void setPlayers(PlayerFixedImpl playerFixedImpl, PlayerRandomImpl playerRandomImpl) {
+		this.playerOne = playerFixedImpl;
+		this.playerTwo = playerRandomImpl;
 	}
 	
 	/**

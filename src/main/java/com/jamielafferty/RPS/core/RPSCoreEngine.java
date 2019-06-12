@@ -35,11 +35,23 @@ public class RPSCoreEngine {
 				return game;
 			}
 		}
+		
 		LOGGER.warning(String.format("Could not get game with ID %d", id));
 		throw new Exception("Game not found");
-			
+	}
 	
+	/**
+	 * Function to get all the games that exist
+	 * @return rpsGames list which holds all active games
+	 */
 	public List<RPSGame> getAllGames() {
 		return rpsGames;
+	}
+	
+	/**
+	 * Function to clear all existing games, resetting to 0
+	 */
+	public void clearAllGames() {
+		this.rpsGames.clear();
 	}
 }
