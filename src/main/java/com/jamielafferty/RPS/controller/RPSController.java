@@ -54,7 +54,7 @@ public class RPSController {
 		// Create a new game in the game engine
 		Integer gameId = coreEngine.createNewGame();
 
-		LOGGER.info(String.format("End - created new game with ID {}", gameId));
+		LOGGER.info(String.format("End - created new game with ID %d", gameId));
 		//URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(gameId).toUri();
 
 		//return ResponseEntity.created(uri).body(coreEngine.getGame(gameId));
@@ -64,7 +64,7 @@ public class RPSController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public RPSGame getGame(@PathVariable Integer id) throws Exception {
-		LOGGER.info(String.format("Start - Get game with ID {}", id));
+		LOGGER.info(String.format("Start - Get game with ID %d", id));
 		// This method throws exception if game not found, which is then thrown by this
 		// method
 		return coreEngine.getGame(id);
@@ -74,7 +74,7 @@ public class RPSController {
 	// Return the game to display on the page
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/round")
 	void playRoundOfTheGame(@PathVariable Integer id) throws Exception {
-		LOGGER.info(String.format("Start - play a round of game {}", id));
+		LOGGER.info(String.format("Start - play a round of game %d", id));
 		// This method throws exception if game not found, which is then thrown by this
 		// method
 		RPSGame game = coreEngine.getGame(id);
@@ -88,7 +88,7 @@ public class RPSController {
 	// DELETE
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/restart")
 	void restartGame(@PathVariable Integer id) throws Exception {
-		LOGGER.info(String.format("Start - restart game {}", id));
+		LOGGER.info(String.format("Start - restart game %d", id));
 		RPSGame game = coreEngine.getGame(id);
 		game.restartGame();
 		LOGGER.info("End - restarted game");

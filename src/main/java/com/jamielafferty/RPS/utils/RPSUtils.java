@@ -49,7 +49,7 @@ public class RPSUtils {
 		LOGGER.info("Start - Get a random move to play");
 		Random random = new Random();
 		Moves moveToPlay = Moves.values()[random.nextInt(Moves.values().length)];
-		LOGGER.info(String.format("End - Playing move {}", moveToPlay));
+		LOGGER.info(String.format("End - Playing move %s", moveToPlay));
 		return moveToPlay;
 	}
 	
@@ -71,8 +71,9 @@ public class RPSUtils {
 		// If either move is null or either move is not valid/legal, throw exception
 		if (null == playerOneMove || null == playerTwoMove
 				|| !(playerOneMove instanceof Moves) || !(playerTwoMove instanceof Moves)) {
-			LOGGER.warning(String.format("Invalid move has been given - PlayerOne: {}, PlayerTwo: {}", playerOneMove, playerTwoMove));
-			throw new IllegalArgumentException("Invalid move given: playerOneMove == " + playerOneMove + ", playerTwoMove == " + playerTwoMove);
+			String errorMessage = String.format("Invalid move has been given - PlayerOne: %s, PlayerTwo: %s", playerOneMove, playerTwoMove);
+			LOGGER.warning(errorMessage);
+			throw new IllegalArgumentException(errorMessage);
 		}
 		
 		// If they are the same move, then it's a tie

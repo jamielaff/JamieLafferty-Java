@@ -35,7 +35,7 @@ public class RPSCoreEngine {
 				return game;
 			}
 		}
-		LOGGER.warning(String.format("Could not get game with ID {}", id));
+		LOGGER.warning(String.format("Could not get game with ID %d", id));
 		throw new Exception("Game not found");
 			
 	
