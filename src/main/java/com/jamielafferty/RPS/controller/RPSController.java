@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.jamielafferty.RPS.core.RPSCoreEngine;
 import com.jamielafferty.RPS.core.RPSGame;
@@ -22,10 +22,11 @@ import com.jamielafferty.RPS.core.RPSGame;
  * @author Jamie
  *
  */
-@Controller
+@RestController
 public class RPSController {
 	
 	private static final Logger LOGGER = Logger.getLogger(RPSController.class.getName());
+	private static final String API_VERSION = "/api/v1";
 
 	@Autowired
 	private RPSCoreEngine coreEngine;
@@ -47,50 +48,68 @@ public class RPSController {
 	}
 
 	// POST method to create the game
-	@RequestMapping(method = RequestMethod.POST, value = "/create")
+	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/create")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createNewGame() throws Exception {
+	public Integer createNewGame() throws Exception {
 		LOGGER.info("Start - Create new game");
 		// Create a new game in the game engine
 		Integer gameId = coreEngine.createNewGame();
-
+		
 		LOGGER.info(String.format("End - created new game with ID %d", gameId));
-		//URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(gameId).toUri();
-
-		//return ResponseEntity.created(uri).body(coreEngine.getGame(gameId));
+		return gameId;
 	}
 
 	// TODO better exception
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public RPSGame getGame(@PathVariable Integer id) throws Exception {
+	@RequestMapping(method = RequestMethod.GET, value = API_VERSION + "/games/{id}")
+	public HttpStatus getGame(@PathVariable Integer id, ModelMap modelMap) throws Exception {
 		LOGGER.info(String.format("Start - Get game with ID %d", id));
-		// This method throws exception if game not found, which is then thrown by this
-		// method
-		return coreEngine.getGame(id);
+		// This method throws exception if game not found, which is then thrown by this method
+		try {
+			RPSGame rpsGame = coreEngine.getGame(id);
+			modelMap.put("selectedGame", rpsGame);
+			LOGGER.info("Got the game and added to ModelMap");
+			return HttpStatus.OK;
+		} catch (Exception ex) {
+			LOGGER.warning(ex.getMessage());
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
 	}
 
 	// PUT method play a round in an existing game
 	// Return the game to display on the page
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/round")
-	void playRoundOfTheGame(@PathVariable Integer id) throws Exception {
+	@RequestMapping(method = RequestMethod.PUT, value = API_VERSION + "/games/{id}/round")
+	public HttpStatus playRoundOfTheGame(@PathVariable Integer id) throws Exception {
 		LOGGER.info(String.format("Start - play a round of game %d", id));
 		// This method throws exception if game not found, which is then thrown by this
 		// method
-		RPSGame game = coreEngine.getGame(id);
-		game.playRound();
-		LOGGER.info("End - played a round");
+		try {
+			RPSGame game = coreEngine.getGame(id);
+			game.playRound();
+			LOGGER.info("End - played a round");
+			return HttpStatus.CREATED;
+		} catch (Exception ex) {
+			LOGGER.warning(ex.getMessage());
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
 	}
 
 	// TODO void is temporary until the class has been created
 	// TODO Throw a custom checked exception
 	// PUT method to reset the current game. We will reuse the ID, so no need to
 	// DELETE
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/restart")
-	void restartGame(@PathVariable Integer id) throws Exception {
+	@RequestMapping(method = RequestMethod.PUT, value = API_VERSION + "/games/{id}/restart")
+	public HttpStatus restartGame(@PathVariable Integer id) throws Exception {
 		LOGGER.info(String.format("Start - restart game %d", id));
-		RPSGame game = coreEngine.getGame(id);
-		game.restartGame();
-		LOGGER.info("End - restarted game");
+		try { 
+			RPSGame game = coreEngine.getGame(id);
+			game.restartGame();
+			LOGGER.info("End - restarted game");
+			return HttpStatus.OK;
+		} catch (Exception ex) {
+			LOGGER.warning(ex.getMessage());
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 	}
 }
