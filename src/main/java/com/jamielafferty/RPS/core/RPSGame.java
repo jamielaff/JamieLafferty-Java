@@ -45,15 +45,21 @@ public class RPSGame {
 	/**
 	 * Method to handle playing a round of the game
 	 */
-	public void playRound() {
+	public RPSRound playRound() {
+		// Calculate the round ID - SUM amm win/tie counts and increment 1
+		Integer nextRoundNum = playerOneWinCount + playerTwoWinCount + tieCount + 1;
 		// Make the moves for both players and determine winner
 		Moves playerOneMove = playerOne.makeMove();
 		Moves playerTwoMove = playerTwo.makeMove();
 		Results result = RPSUtils.getWinner(playerOneMove, playerTwoMove);
 		
+		// Create round object
+		RPSRound round = new RPSRound(nextRoundNum, playerOneMove, playerTwoMove, result);
+		
 		// Create new round object and store this round to the list
-		rpsRounds.add(new RPSRound(playerOneMove, playerTwoMove, result));
+		rpsRounds.add(0, round);
 		this.storeResult(result);
+		return round;
 	}
 	/**
 	 * Function to increase the correct result counter based on the result input
