@@ -3,7 +3,10 @@ package com.jamielafferty.RPS.controller;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,7 @@ import com.jamielafferty.RPS.core.RPSRound;
  *
  */
 @Controller
+@Scope("session")
 public class RPSController {
 	
 	private static final Logger LOGGER = Logger.getLogger(RPSController.class.getName());
@@ -41,8 +45,10 @@ public class RPSController {
 
 	// Default mapping to return the index jsp
 	@RequestMapping(method = RequestMethod.GET, value = "/")
-	public String load(ModelMap modelMap) {
+	public String load(ModelMap modelMap, HttpSession session) {
 		LOGGER.info("Start - load main page");
+        session.setAttribute("coreEngine", coreEngine);
+
 		List<RPSGame> games = coreEngine.getAllGames();
 		modelMap.put("gamesList", games);
 		LOGGER.info("Loaded all games");
