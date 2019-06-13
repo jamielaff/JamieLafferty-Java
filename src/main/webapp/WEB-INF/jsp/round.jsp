@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<tr>
+<tr class="roundOutcome">
     <td id="roundId"><c:out value = "${roundId}"/></td>
     <td id="playerOneMove"><c:out value = "${playerOneMove}"/></td>
     <td id="playerTwoMove"><c:out value = "${playerTwoMove}"/></td>

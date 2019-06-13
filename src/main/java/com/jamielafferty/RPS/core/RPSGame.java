@@ -66,12 +66,17 @@ public class RPSGame {
 	 * @param result the result of the round played
 	 */
 	public void storeResult(Results result) {
+		// A round has been played so we must ALWAYS increment it
+		RPSCoreEngine.incrementTotalRoundsPlayed();
 		if (result == Results.TIE) {
 			tieCount++;
+			RPSCoreEngine.incrementTotalTies();
 		} else if (result == Results.PLAYER_ONE) {
 			playerOneWinCount++;
+			RPSCoreEngine.incrementTotalP1Wins();
 		} else {
 			playerTwoWinCount++;
+			RPSCoreEngine.incrementTotalP2Wins();
 		}
 	}
 	

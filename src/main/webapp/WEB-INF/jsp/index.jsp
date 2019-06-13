@@ -18,25 +18,7 @@
                     <h2>Rock Paper Scissors Game</h2>
                 </div>
             </div>
-            <hr/>
-            <div class="row" id="information">
-                <div class="col-sm-3">
-                    <h3>Total rounds played</h3>
-                    <p>0</p>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Total wins for player 1</h3>
-                    <p>0</p>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Total wins for player 2</h3>
-                    <p>0</p>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Total ties</h3>
-                    <p>0</p>
-                </div>
-            </div>
+            <hr id="breaker"/>
             <hr/>
             <div class="row" id="data">
                 <div class="col-sm-3" id="displayGames">
@@ -59,6 +41,10 @@
 
         <!-- Ajax function calls -->
         <script type="text/javascript">
+            window.onload = function () {
+                updateStatsGET();
+            };
+
             // Click event for createNewGame
             $("#createNewGame").click(function () {
                 newGamePOST();
@@ -74,7 +60,6 @@
                     url: '/api/v1/games/create',
         
                     success: function(response) {
-                        console.log("New game succesfully created!");
                         document.getElementById("activeGames").insertAdjacentHTML('afterbegin', '<li class="list-group-item" role="button" id="' + response.gameId + '">Game #' + response.gameId+ '</li>');
                         activateGameLinkHook();
                     },
@@ -86,7 +71,7 @@
                 });
             }
 
-            // Hanle GET for getGame
+            // Handle GET for getGame
             function gameGET(gameId) {
                 var urlAddr = '/api/v1/games/' + gameId;
                 $.ajax({
@@ -97,6 +82,7 @@
                         document.getElementById("displayRoundsForGame").innerHTML = "";
                         document.getElementById("displayRoundsForGame").insertAdjacentHTML('afterbegin', response);
                         activatePlayNewRoundHook();
+                        activateRestartGameHook();
                     },
 
                     failure: function(errMsg) {
@@ -106,8 +92,8 @@
                 })
             }
 
-            // Hanle PUT for newRound
-            function newRoundPUT() {
+            // Handle POST for newRound
+            function newRoundPOST() {
                 var activeId = $('li.active').attr("id");
                 var urlAddr = '/api/v1/games/' + activeId + '/rounds'
 
@@ -116,12 +102,50 @@
                     url: urlAddr,
 
                     success: function(response) {
-                        console.log(response);
                         document.getElementById("roundDetails").insertAdjacentHTML('afterend', response);
+                        updateStatsGET();
                     },
 
                     failure: function(errMsg) {
-                        alert("nok");
+                        console.log(errMsg.toString());
+                        alert('There was a problem playing a round for game #'+gameId);
+                    }
+                })
+            }
+
+            // Handle POST to restart game
+            function restartGamePOST() {
+                var activeId = $('li.active').attr("id");
+                var urlAddr = '/api/v1/games/' + activeId + '/restart';
+                $.ajax({
+                    type: "POST",
+                    url: urlAddr,
+
+                    success: function(response) {
+                        $('.roundOutcome').remove();
+                    },
+
+                    failure: function(errMsg) {
+                        console.log(errMsg.toString());
+                        alert('There was a problem restarting game #' + activeId);
+                    }
+                })
+            }
+
+            function updateStatsGET() {
+                var stats = document.getElementById("information");
+                if (typeof(stats) != 'undefined' && stats != null)
+                {
+                    stats.remove();
+                }
+                var urlAddr = '/api/v1/statistics';
+
+                $.ajax({
+                    type: "GET",
+                    url: urlAddr,
+
+                    success: function(response) {
+                        document.getElementById("breaker").insertAdjacentHTML('afterend', response);
                     }
                 })
             }
@@ -138,8 +162,13 @@
 
             function activatePlayNewRoundHook() {
                 $("#playNewRound").click(function () {
-                    var activeId = $('li.active').attr("id");
-                    newRoundPUT()
+                    newRoundPOST();
+                });
+            }
+
+            function activateRestartGameHook() {
+                $("#restartGame").click(function () {
+                    restartGamePOST();
                 });
             }
         </script>

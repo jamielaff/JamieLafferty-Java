@@ -78,7 +78,15 @@ public class RPSController {
 		}
 	}
 
-	// PUT method play a round in an existing game
+	/**
+	 * POST method play a round in an existing game
+	 * This SHOULD really be a PUT, but issues with CSRF/Spring not allowing PUT and DELETE by default,
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/{id}/rounds")
 	@ResponseStatus(HttpStatus.OK)
 	public String playRoundOfTheGame(@PathVariable Integer id, Model model) throws Exception {
@@ -101,8 +109,13 @@ public class RPSController {
 		
 	}
 
-	// PUT method to reset the current game. We will reuse the ID, so no need to DELETE
-	@RequestMapping(method = RequestMethod.PUT, value = API_VERSION + "/games/{id}/restart")
+	/**
+	 * POST method to restart the game
+	 * This SHOULD really be a PUT or a DELETE, but issues with CSRF/Spring not allowing PUT and DELETE by default,
+	 * @param id
+	 * @throws Exception
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/{id}/restart")
 	@ResponseStatus(HttpStatus.OK)
 	public void restartGame(@PathVariable Integer id) throws Exception {
 		LOGGER.info(String.format("Start - restart game %d", id));
@@ -113,5 +126,21 @@ public class RPSController {
 		} catch (Exception ex) {
 			LOGGER.warning(ex.getMessage());
 		}
+	}
+	
+	/**
+	 * GET method to update the top stats (total rounds, wins, ties) 
+	 * @param model
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = API_VERSION + "/statistics")
+	@ResponseStatus(HttpStatus.OK)
+	public String refreshStatistics(Model model) {
+		LOGGER.info("Start - Update top level statistics");
+		model.addAttribute("totalRoundsPlayed", RPSCoreEngine.getTotalRoundsPlayed());
+		model.addAttribute("totalP1Wins", RPSCoreEngine.getTotalP1Wins());
+		model.addAttribute("totalP2Wins", RPSCoreEngine.getTotalP2Wins());
+		model.addAttribute("totalTies", RPSCoreEngine.getTotalTies());
+		LOGGER.info("End - Update stats");
+		return "stats";
 	}
 }
