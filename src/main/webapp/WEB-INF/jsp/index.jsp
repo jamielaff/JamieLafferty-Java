@@ -113,16 +113,17 @@
                 })
             }
 
-            // Handle POST to restart game
-            function restartGamePOST() {
+            // Handle DELETE to restart game
+            function restartGameDELETE() {
                 var activeId = $('li.active').attr("id");
                 var urlAddr = '/api/v1/games/' + activeId + '/restart';
                 $.ajax({
-                    type: "POST",
+                    type: "DELETE",
                     url: urlAddr,
 
                     success: function(response) {
                         $('.roundOutcome').remove();
+                        console.log("Doneth deleteth");
                     },
 
                     failure: function(errMsg) {
@@ -168,7 +169,7 @@
 
             function activateRestartGameHook() {
                 $("#restartGame").click(function () {
-                    restartGamePOST();
+                    restartGameDELETE();
                 });
             }
         </script>

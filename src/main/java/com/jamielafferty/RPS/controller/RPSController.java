@@ -85,9 +85,6 @@ public class RPSController {
 	}
 
 	/**
-	 * POST method play a round in an existing game
-	 * This SHOULD really be a PUT, but issues with CSRF/Spring not allowing PUT and DELETE by default,
-	 * 
 	 * @param id
 	 * @param model
 	 * @return
@@ -116,14 +113,12 @@ public class RPSController {
 	}
 
 	/**
-	 * POST method to restart the game
-	 * This SHOULD really be a PUT or a DELETE, but issues with CSRF/Spring not allowing PUT and DELETE by default,
 	 * @param id
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/{id}/restart")
+	@RequestMapping(method = RequestMethod.DELETE, value = API_VERSION + "/games/{id}/restart")
 	@ResponseStatus(HttpStatus.OK)
-	public void restartGame(@PathVariable Integer id) throws Exception {
+	public @ResponseBody void restartGame(@PathVariable Integer id) throws Exception {
 		LOGGER.info(String.format("Start - restart game %d", id));
 		try { 
 			RPSGame game = coreEngine.getGame(id);
