@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +22,6 @@ import com.jamielafferty.RPS.core.RPSRound;
 
 /**
  * Class to handle all GAME operations (view all, create new, play a round, restart)
- * Check these are ALL the operations we need
  * 
  * @author Jamie
  *
@@ -43,19 +41,28 @@ public class RPSController {
 		this.coreEngine = coreEngine;
 	}
 
-	// Default mapping to return the index jsp
+	/**
+	 * Default mapping to return the index jsp
+	 * @param model
+	 * @param session
+	 * @return index jsp
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/")
-	public String load(ModelMap modelMap, HttpSession session) {
+	public String load(Model model, HttpSession session) {
 		LOGGER.info("Start - load main page");
         session.setAttribute("coreEngine", coreEngine);
-
 		List<RPSGame> games = coreEngine.getAllGames();
-		modelMap.put("gamesList", games);
+		model.addAttribute("gamesList", games);
 		LOGGER.info("Loaded all games");
 		LOGGER.info("End - load main page");
 		return "index";
 	}
 
+	/**
+	 * Mapping to create a new game
+	 * @return JSON of the new gameId
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/create", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
@@ -68,6 +75,13 @@ public class RPSController {
 		return "{\"gameId\" : " + gameId.toString() + "}";
 	}
 
+	/**
+	 * Mapping to get a game with an ID
+	 * @param id
+	 * @param model
+	 * @return game jsp
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = API_VERSION + "/games/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public String getGame(@PathVariable Integer id, Model model) throws Exception {
@@ -76,7 +90,7 @@ public class RPSController {
 		try {
 			RPSGame rpsGame = coreEngine.getGame(id);
 			model.addAttribute("selectedGameRounds", rpsGame.getPlayedRounds());
-			LOGGER.info("Got the game and added to ModelMap");
+			LOGGER.info("Got the game and added to Model");
 			return "game";
 		} catch (Exception ex) {
 			LOGGER.warning(ex.getMessage());
@@ -85,9 +99,10 @@ public class RPSController {
 	}
 
 	/**
+	 * Mapping to play a round of a game
 	 * @param id
 	 * @param model
-	 * @return
+	 * @return round jsp
 	 * @throws Exception
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = API_VERSION + "/games/{id}/rounds")
@@ -113,6 +128,7 @@ public class RPSController {
 	}
 
 	/**
+	 * Mapping to restart a game with an ID
 	 * @param id
 	 * @throws Exception
 	 */
@@ -126,12 +142,14 @@ public class RPSController {
 			LOGGER.info("End - restarted game");
 		} catch (Exception ex) {
 			LOGGER.warning(ex.getMessage());
+			throw ex;
 		}
 	}
 	
 	/**
-	 * GET method to update the top stats (total rounds, wins, ties) 
+	 * Mapping to update the top stats (total rounds, wins, ties) 
 	 * @param model
+	 * @return stats jsp
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = API_VERSION + "/statistics")
 	@ResponseStatus(HttpStatus.OK)

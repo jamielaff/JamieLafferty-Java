@@ -5,6 +5,12 @@ import java.util.logging.Logger;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Utility function which are used across the whole application
+ * 
+ * @author Jamie
+ *
+ */
 public class RPSUtils {
 	
 	private static final Logger LOGGER = Logger.getLogger(RPSUtils.class.getName());
@@ -63,8 +69,6 @@ public class RPSUtils {
 	 * @param playerOneMove the move player 1 made
 	 * @param playerTwoMove the move player 2 made
 	 * @return the result of the game - TIE, PLAYER_ONE or PLAYER_TWO only
-	 * 
-	 * TODO Throw a better/custom exception?
 	 */
 	public static Results getWinner(Moves playerOneMove, Moves playerTwoMove) throws IllegalArgumentException {
 		LOGGER.info("Start - Determine who the winner is");

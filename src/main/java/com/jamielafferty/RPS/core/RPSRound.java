@@ -3,6 +3,12 @@ package com.jamielafferty.RPS.core;
 import com.jamielafferty.RPS.utils.RPSUtils.Moves;
 import com.jamielafferty.RPS.utils.RPSUtils.Results;
 
+/**
+ * Class to hold individual round data (ID, moves played and result)
+ * 
+ * @author Jamie
+ *
+ */
 public class RPSRound {	
 	private Integer id;
 	private Moves playerOneMove;

@@ -11,6 +11,12 @@ import com.jamielafferty.RPS.utils.RPSUtils;
 import com.jamielafferty.RPS.utils.RPSUtils.Moves;
 import com.jamielafferty.RPS.utils.RPSUtils.Results;
 
+/**
+ * Class to hold all game information (which rounds, what the game ID is, the players, etc)
+ * 
+ * @author Jamie
+ *
+ */
 public class RPSGame {	
 	// Counter to control unique game IDs
 	protected static final AtomicInteger count = new AtomicInteger(0);
@@ -19,7 +25,7 @@ public class RPSGame {
 	// Array to hold all rounds from this game
 	private List<RPSRound> rpsRounds = new ArrayList<>();
 	// Array to hold both players - used for shuffling into random order for the game
-	List<Player> playerList = new ArrayList();
+	List<Player> playerList = new ArrayList<>();
 	
 	// Player and win/tie counter declarations
 	private PlayerRandomImpl playerRandomImpl = new PlayerRandomImpl();
@@ -111,6 +117,7 @@ public class RPSGame {
 		playerTwoWinCount = 0;
 		tieCount = 0;
 		rpsRounds.clear();
+		randomisePlayers();
 	}
 	
 	/**

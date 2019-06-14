@@ -7,6 +7,14 @@ import java.util.logging.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * Class to handle all core parts of the application
+ * Scoped to a browser session to allow multiple users to access at the same time, and have their own games/rounds
+ * Static integers (round playes, wins, ties) are common across ALL sessions (all users will see this)
+ * 
+ * @author Jamie
+ *
+ */
 @Component
 @Scope("session")
 public class RPSCoreEngine {
