@@ -5,20 +5,33 @@ import com.jamielafferty.RPS.utils.RPSUtils.Moves;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+/**
+ * This test will cover the basic functions of the Player classes
+ * 
+ * @author Jamie
+ *
+ */
+@RunWith(MockitoJUnitRunner.class)
 public class PlayersTest {
+	@Mock
+	PlayerRandomImpl playerRandom;
 	PlayerFixedImpl playerFixed = new PlayerFixedImpl();
-	PlayerRandomImpl playerRandom = new PlayerRandomImpl();
 	
 	// Instantiate anything before testing
 	@Before
 	public void setup() {
-		
+		Mockito.when(playerRandom.makeMove()).thenReturn(Moves.PAPER);
 	}
 	
 	@Test
 	public void should_getRandomMove_when_usingPlayerRandom() {
-		// Can we test randomness? We have to trust the Java Random class...
+		Moves movePlayed1 = playerRandom.makeMove();
+		assertEquals(Moves.PAPER, movePlayed1);
 	}
 	
 	@Test
