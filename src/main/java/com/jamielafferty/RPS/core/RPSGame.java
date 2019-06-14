@@ -171,7 +171,6 @@ public class RPSGame {
 	/**
 	 * Function to return the last played round
 	 * @return the last round played
-	 * TODO Is there a better way to do this?
 	 */
 	public RPSRound getLastRound() {
 		if (rpsRounds.size()>0) {

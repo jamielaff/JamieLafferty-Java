@@ -123,7 +123,6 @@
 
                     success: function(response) {
                         $('.roundOutcome').remove();
-                        console.log("Doneth deleteth");
                     },
 
                     failure: function(errMsg) {
