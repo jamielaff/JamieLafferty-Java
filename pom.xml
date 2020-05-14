@@ -81,23 +81,26 @@
 	
     <build>
         <plugins>
-            <plugin> 
-							<!-- Building an executable jar -->
-
+            <plugin>
 							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jar-plugin</artifactId>
-							<version>3.1.0</version>
-							<configuration>
-								<archive>
-									<manifest>
-
-									<!-- give full qualified name of your main class-->
-										<mainClass>com.jamielafferty.RPS.RPSApplication</mainClass>
-
-									</manifest>
-								</archive>
-							</configuration>
-    			</plugin>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<executions>
+									<execution>
+											<phase>package</phase>
+											<goals><goal>copy</goal></goals>
+											<configuration>
+													<artifactItems>
+															<artifactItem>
+																	<groupId>com.heroku</groupId>
+																	<artifactId>webapp-runner</artifactId>
+																	<version>9.0.30.0</version>
+																	<destFileName>webapp-runner.jar</destFileName>
+															</artifactItem>
+													</artifactItems>
+											</configuration>
+									</execution>
+							</executions>
+					</plugin>
         </plugins>
     </build>
 </project>
