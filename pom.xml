@@ -6,7 +6,7 @@
 	<groupId>com.jamielafferty</groupId>
 	<artifactId>RPS-Game</artifactId>
 	<version>1.0.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>RockPaperScissors</name>
 
