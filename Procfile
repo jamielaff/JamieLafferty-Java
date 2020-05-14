@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.jamielafferty.RPS.RPSApplication server application.yml
+web: java $JAVA_OPTS -Dserver.port=$PORT -war RPS-Game/target/RPS-Game-1.0.0-SNAPSHOT.war
