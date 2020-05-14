@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -war RPS-Game/target/RPS-Game-1.0.0-SNAPSHOT.war
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar RPS-Game/target/RPS-Game-1.0.0.war
