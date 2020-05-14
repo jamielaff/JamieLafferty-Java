@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/*.war
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.jamielafferty.RPS.RPSApplication server application.yml
