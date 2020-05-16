@@ -1,1 +1,1 @@
-web: java -jar target/RPS-Game-1.0.0.jar
+web: java -Dserver.port=$PORT -jar target/RPS-Game-1.0.0.jar
