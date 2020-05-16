@@ -7,3 +7,4 @@ spring:
       suffix: .jsp
   datasource:
     driver-class-name: org.postgresql.Driver
+    url: postgres://mlrcroluaggbtr:9957eddcde88fe19bbc9c0817d482d66da757261afafaa8933361365a03b8bef@ec2-54-246-85-151.eu-west-1.compute.amazonaws.com:5432/d6b6av3rbpepin
